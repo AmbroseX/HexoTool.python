@@ -122,19 +122,23 @@ class mainButton(QMainWindow, Ui_MainWindow):
         # 先检查当前端口是否被占用了
         from lib.PortAction import CheckPort
         result = CheckPort(self.lineEdit_port.text())
-        self.show_msg(result)
+        if result == False:
+            self.show_msg("端口"+self.lineEdit_port.text()+"没有部署")
+        else:
+            self.show_msg(result)
         #print(result)
         if result == False:
+            self.show_msg("尝试打开端口:"+self.lineEdit_port.text())
             try:
                 self.OpenServer.setPort(self.lineEdit_port.text())    #传入端口值
                 self.OpenServer.setTurnOnOff(1)  #修改线程内部值
                 self.OpenServer.start() #开始线程
-                self.show_msg("Open"+self.localurl)
+                self.show_msg("Open"+self.localurl())
                 self.show_msg("localhost open success")
             except KeyboardInterrupt:
                 self.show_msg(__config__["CompleteTip"]["server_done_text"])
         else:
-            self.show_msg("当前端口:", self.lineEdit_port.text(), " 已打开")
+            self.show_msg("当前端口:"+ self.lineEdit_port.text()+" 已打开")
             openurl(self.localurl())
             self.show_msg("open " + self.localurl() + " success")
 
@@ -144,7 +148,7 @@ class mainButton(QMainWindow, Ui_MainWindow):
         self.OpenServer.setFlag(False)
         print(self.OpenServer.is_alive())
         if result == False:
-            self.show_msg("当前端口:", self.lineEdit_port.text(), " 没有运行")
+            self.show_msg("当前端口:"+self.lineEdit_port.text()+" 没有运行")
         self.show_msg("kill port \n" + result + '\n kill success!')
 
     # 显示第二个窗口来创建文章
