@@ -7,7 +7,7 @@ sys.path.append(os.path.join(os.getcwd(), "QtUI"))  #添加UI的路径
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QIcon
 from lib.mainButton import mainButton
-
+from lib import config
 
 
 if __name__== '__main__':

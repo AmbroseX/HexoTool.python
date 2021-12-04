@@ -1,7 +1,7 @@
 import shutil
 import os
-from ruamel import yaml
 
+import yaml
 
 def copy_rename(srcpath, srcname, dstpath, dstname, dsttype):
     '''
@@ -106,6 +106,25 @@ def mkfile(dstpath, dstname, dsttype):  # 创建空文件夹
     else:
         return "目标目录不存在"
 
+def open_file_path(path):
+    if os.path.isdir(path):  # 目标目录存在
+        cmd = 'explorer.exe ' + path
+        os.system(cmd)
+        return path
+    else:
+        return "目标目录不存在"
+        print("目标目录不存在")
+
+def open_file(arg):
+    from PyQt5 import QtWidgets
+    '''
+    fileName = 'G:/Data/WenLab/JC_Update/SD.pdf'
+    fileType = '*.pdf'
+    '''
+    fileName, fileType = QtWidgets.QFileDialog.getOpenFileName( "选取文件", os.getcwd(), "All Files(*.pdf)")
+    rawPDF = fileName
+    # 复制文件到目录
+    return fileName
 
 # 将字典写入yaml文件
 def writeyml(filepath, filename, fileType, list):
@@ -146,13 +165,14 @@ def add_blank(lstr, arg):
     return kstr
 
 
-def readyml_2(filepath):
+def readymldir(filepath):
     if os.path.isfile(filepath):
         with open(filepath, 'r', encoding='utf-8') as f:
             result = yaml.load(f.read(), Loader=yaml.Loader)  # 加上Loader=yaml.Loader 避免警告
         return result
     else:
         return "目标文件不存在"
+
 
 
 def readyml(filepath, filename, fileType):

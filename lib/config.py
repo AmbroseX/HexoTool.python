@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
-def get(arg):
-    config = {}
-    config['blog_posion'] = r'G:\Data\MyBlog\source_blog'
-    config['常用命令'] = ""
-    return config[arg]
 
+import yaml
+
+
+
+
+def readtxt(filename):
+    with open(filename, "r") as f:  # 打开文件
+        data = f.read()  # 读取文件
+        return(data)  #返回读取内容
 
 def time2num(time):
     time = time.split(":", maxsplit=-1)  # 0,1,2,3
@@ -15,7 +19,6 @@ def time2num(time):
     h = int(time[0])
     m = int(time[1])
     return h, m, s
-
 
 
 

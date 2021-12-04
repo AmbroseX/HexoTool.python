@@ -1,0 +1,10 @@
+#新建post文章
+hexo new post PassageName
+#新建draft文章
+hexo new draft PassageName
+#清除构建的内容
+hexo clean
+#生成页面
+hexo g
+#部署页面
+hexo d

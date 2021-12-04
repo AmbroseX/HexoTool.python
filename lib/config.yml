@@ -1,0 +1,22 @@
+author:
+    author: "爱养虫的小熊"
+    email: "earth@mail.ustc.edu.cn"
+    HomePage: "https://rongkangxiong.top"
+    #author2: "XXX"
+
+BlogInfo:
+    blog_position: 'G:\Data\MyBlog\source_blog'   #注意单引号
+    gitee: "https://neuronbear.gitee.io/"
+    github: "https://rongkangxiong.github.io/"
+    github_repo: "git@github.com:RongkangXiong/source_blog.git"
+
+HexoCommand:
+    Server: "hexo s"
+    Clean: "hexo clean"
+    generator: "hexo g"
+    deploy: "hexo d"
+
+CompleteTip:
+    star: "*"
+    server_done_text: "server done"
+
