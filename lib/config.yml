@@ -22,3 +22,6 @@ CompleteTip:
 
 Other:
     CommitInfo: "Add Commit Here"
+
+ToolsPath:
+    GitHubDesktop: 'C:\Users\Administrator\AppData\Local\GitHubDesktop\GitHubDesktop.exe'

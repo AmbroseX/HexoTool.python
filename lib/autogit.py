@@ -93,7 +93,6 @@ blog_disk = blog_position.split("\\")[0]  #获取博客所在盘符
 dirfile = 'G:\Data\MyBlog\Tools\HexoTool.python'
 
 
-
 # 多线程操作来Push到GitHub
 AutoPuShGihub = MyGitThread()  # 实例化多线程对象
 AutoPuShGihub.setDaemon(True)  # 保护线程，主进程结束会关闭线程

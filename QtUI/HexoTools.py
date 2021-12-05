@@ -133,5 +133,5 @@ class Ui_MainWindow(object):
         self.lineEdit_port.setText(_translate("MainWindow", "4000"))
         self.open_local_debug.setText(_translate("MainWindow", "打开本地调试"))
         self.close_local_debug.setText(_translate("MainWindow", "关闭本地调试"))
-        self.Push_Github.setText(_translate("MainWindow", "Push 到GitHub"))
+        self.Push_Github.setText(_translate("MainWindow", "打开GitHubDesktop进行上传"))
 

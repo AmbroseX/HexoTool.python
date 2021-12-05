@@ -198,7 +198,7 @@
        </sizepolicy>
       </property>
       <property name="text">
-       <string>Push 到GitHub</string>
+       <string>打开GitHubDesktop进行上传</string>
       </property>
      </widget>
     </item>
