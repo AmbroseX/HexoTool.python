@@ -112,19 +112,10 @@ def open_file_path(path):
         os.system(cmd)
         return path
     else:
-        return "目标目录不存在"
         print("目标目录不存在")
+        return "目标目录不存在"
 
-def open_file(arg):
-    from PyQt5 import QtWidgets
-    '''
-    fileName = 'G:/Data/WenLab/JC_Update/SD.pdf'
-    fileType = '*.pdf'
-    '''
-    fileName, fileType = QtWidgets.QFileDialog.getOpenFileName( "选取文件", os.getcwd(), "All Files(*.pdf)")
-    rawPDF = fileName
-    # 复制文件到目录
-    return fileName
+
 
 # 将字典写入yaml文件
 def writeyml(filepath, filename, fileType, list):

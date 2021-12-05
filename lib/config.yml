@@ -20,3 +20,5 @@ CompleteTip:
     star: "*"
     server_done_text: "server done"
 
+Other:
+    CommitInfo: "Add Commit Here"

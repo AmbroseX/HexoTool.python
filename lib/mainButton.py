@@ -2,8 +2,10 @@ __author__ = 'Rong_kang_Xiong'
 # -*- coding: utf-8 -*-
 import sys
 import os
+from time import ctime
 import threading
 import subprocess
+from git import Repo
 sys.path.append(os.path.join(os.getcwd(), "lib"))  #添加lib
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QDate, QDateTime
@@ -17,7 +19,7 @@ from lib.PortAction import killPortAllPID
 
 from functools import partial
 from lib.openUrl import openurl
-from lib.FileAction import readymldir,open_file_path
+from lib.FileAction import readymldir,open_file_path,quotes_str
 
 
 
@@ -46,7 +48,7 @@ class mainButton(QMainWindow, Ui_MainWindow):
         self.open_github.clicked.connect(partial(self.openlink,__config__["BlogInfo"]["github"]))  #绑定点击打开github
         self.choose_blog_position.clicked.connect(self.button_press_choose_blog_position)  #点击选择博客路径
         self.open_blog_position.clicked.connect(self.button_press_open_blog_path)  #打开博客路径
-        self.Push_Github.clicked.connect(self.button_press_Push_Github)   #Push到github上面
+
         self.clear_log.clicked.connect(self.button_press_clear_log)  # 清空消息日志
 
         #多线程操作来打开本地Server
@@ -54,6 +56,13 @@ class mainButton(QMainWindow, Ui_MainWindow):
         self.OpenServer.setDaemon(True) #保护线程，主进程结束会关闭线程
         self.open_local_debug.clicked.connect(self.button_press_open_local_debug)  #打开本地调试
         self.close_local_debug.clicked.connect(self.button_press_close_local_debug)  #关闭本地调试
+
+        #多线程操作来Push到GitHub
+        self.AutoPuShGihub = MyGitThread() #实例化多线程对象
+        self.AutoPuShGihub.setDaemon(True) #保护线程，主进程结束会关闭线程
+        self.AutoPuShGihub.setPath(blog_position)  #设置Push的博客本地
+        self.Push_Github.clicked.connect(self.button_press_Push_Github)  # Push到github上面键绑定
+        self.lineEdit_Add_Commit.setText(__config__["Other"]["CommitInfo"])
 
         #新建文章Button绑定
         self.buildWindow = BuildButton()  #实例化新建文章子界面类
@@ -175,7 +184,20 @@ class mainButton(QMainWindow, Ui_MainWindow):
         #self.signal_main.emit(self.signal_from_subwindow+'从main来')
 
     def button_press_Push_Github(self):
-        print("ceshi")
+        commitrepo = self.lineEdit_Add_Commit.text()
+        print(commitrepo)
+        if commitrepo == __config__["Other"]["CommitInfo"]: #没有Commit 改变
+            print("自动添加Commit")
+            print(self.AutoPuShGihub.path)
+            self.PushGihubThread.setCommit(ctime())  #添加此时的时间
+        else:
+            self.PushGihubThread.setCommit(commitrepo)
+        self.AutoPuShGihub.start()
+        self.show_msg("Begin Push to Github")
+        self.AutoPuShGihub.setFlag(False)  # 修改线程运行状态，关闭线程
+        self.show_msg("Push success")
+        #self.show_msg("线程是否还在运行:"+self.AutoPuShGihub.is_alive())  # 查看线程运行状态
+        self.show_msg(self.AutoPuShGihub.Commit)
 
 
 
@@ -188,6 +210,8 @@ def executeCommand(self, cmd:str):
         return False
         #self.show_msg(cmd + " 命令错误")
 
+def getdesk(path:str):
+    return path.split("\\")[0]  # 获取博客所在盘符
 
 def DateTime2str(DateTime, dtlen=7):  # 将时间转换为字符串 例如2021/7/23/19/20/05/345
     dtstr = ''
@@ -253,3 +277,55 @@ class MyThread(threading.Thread):
     def setPort(self,parm):
         self.port = parm
         self.localport = self.localport = "http://localhost:"+self.port
+
+class MyGitThread(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.Flag = True  # 停止标志位
+        # 自行添加参数
+        self.path = 'C:'
+        self.ThreadName = "Thread-aoto-git"
+        self.Commit = "auto update"
+        self.logCommit = 'None'
+
+    #线程的函数
+    def run(self):
+        while (True):
+            if (not self.Flag): #关闭的话
+                break
+            else:
+                repo = Repo(self.path)
+                print(self.path)
+                isdiff = repo.is_dirty()
+                if len(repo.untracked_files) != 0 or isdiff == True:
+                    print("有文件不同")
+                    cmd1 = getdesk(self.path)
+                    print(cmd1)
+                    cmd2 = 'cd '+self.path
+                    print(cmd2)
+                    cmd_gitadd = 'git add --all'
+                    print(cmd_gitadd)
+                    cmd_commit = 'git commit -m '+quotes_str(self.Commit)
+                    self.logCommit = cmd_commit
+                    print(cmd_commit)
+                    git_push = 'git push'
+                    cmdall = cmd1 + ' && '+cmd2+' && '+cmd_gitadd+' && '+cmd_commit+' && '+git_push
+                    subprocess.call(cmdall, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,stderr=subprocess.PIPE,close_fds=True)
+                    #os.system(cmdall)
+                    print("push success!")
+                    self.setFlag(False)
+                else:
+                    print("代码未改变")
+                    self.setFlag(False)  #关闭线程
+    def setFlag(self, parm:bool):  # 外部停止线程的操作函数 True开始执行，False关闭进程
+        self.Flag = parm  # boolean
+
+    def setPath(self,parm:str):
+        self.path = parm  #设置路径
+
+    def setCommit(self,parm:str):
+        #设置Commit内容
+        self.Commit = parm
+
+    def getCommit(self):
+        return self.Commit
