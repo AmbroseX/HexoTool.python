@@ -295,25 +295,33 @@ class MyGitThread(threading.Thread):
                 break
             else:
                 repo = Repo(self.path)
+                g = repo.git
                 print(self.path)
                 isdiff = repo.is_dirty()
                 if len(repo.untracked_files) != 0 or isdiff == True:
                     print("有文件不同")
-                    cmd1 = getdesk(self.path)
-                    print(cmd1)
-                    cmd2 = 'cd '+self.path
-                    print(cmd2)
-                    cmd_gitadd = 'git add --all'
-                    print(cmd_gitadd)
-                    cmd_commit = 'git commit -m '+quotes_str(self.Commit)
-                    self.logCommit = cmd_commit
-                    print(cmd_commit)
-                    git_push = 'git push'
-                    cmdall = cmd1 + ' && '+cmd2+' && '+cmd_gitadd+' && '+cmd_commit+' && '+git_push
-                    subprocess.call(cmdall, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,stderr=subprocess.PIPE,close_fds=True)
-                    #os.system(cmdall)
-                    print("push success!")
-                    self.setFlag(False)
+                    g.add("--all")
+                    print('add success')
+                    g.commit("-m " + self.Commit)
+                    print("Successful Commit!")
+                    g.push()
+                    print("Successful push!")
+
+                    # cmd1 = getdesk(self.path)
+                    # print(cmd1)
+                    # cmd2 = 'cd '+self.path
+                    # print(cmd2)
+                    # cmd_gitadd = 'git add --all'
+                    # print(cmd_gitadd)
+                    # cmd_commit = 'git commit -m '+quotes_str(self.Commit)
+                    # self.logCommit = cmd_commit
+                    # print(cmd_commit)
+                    # git_push = 'git push'
+                    # cmdall = cmd1 + ' && '+cmd2+' && '+cmd_gitadd+' && '+cmd_commit+' && '+git_push
+                    # subprocess.call(cmdall, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,stderr=subprocess.PIPE,close_fds=True)
+                    # #os.system(cmdall)
+                    # print("push success!")
+                    # self.setFlag(False)
                 else:
                     print("代码未改变")
                     self.setFlag(False)  #关闭线程
