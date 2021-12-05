@@ -41,8 +41,8 @@ class MyGitThread(threading.Thread):
                     print(cmd_commit)
                     git_push = 'git push'
                     cmdall = cmd1 + ' && '+cmd2+' && '+cmd_gitadd+' && '+cmd_commit+' && '+git_push
-                    subprocess.call(cmdall, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,stderr=subprocess.PIPE,close_fds=True)
-                    #os.system(cmdall)
+                    #subprocess.call(cmdall, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,stderr=subprocess.PIPE,close_fds=True)
+                    os.system(cmdall)
                     print("push success!")
                     self.setFlag(False)
                 else:
