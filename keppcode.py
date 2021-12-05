@@ -117,6 +117,8 @@ cmd_gotoblogfolder = 'cd '+blog_position
 blog_disk = blog_position.split("\\")[0]  #获取博客所在盘符
 
 
+
+
 pwd = os.getcwd()  #获取当前路径
 print("当前路径 = "+pwd)
 AutoGitPath = os.path.join(pwd,'lib','autogit.py')
