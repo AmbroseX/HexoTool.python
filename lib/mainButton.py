@@ -184,20 +184,27 @@ class mainButton(QMainWindow, Ui_MainWindow):
         #self.signal_main.emit(self.signal_from_subwindow+'从main来')
 
     def button_press_Push_Github(self):
-        commitrepo = self.lineEdit_Add_Commit.text()
-        print(commitrepo)
-        if commitrepo == __config__["Other"]["CommitInfo"]: #没有Commit 改变
-            print("自动添加Commit")
-            print(self.AutoPuShGihub.path)
-            self.PushGihubThread.setCommit(ctime())  #添加此时的时间
-        else:
-            self.PushGihubThread.setCommit(commitrepo)
-        self.AutoPuShGihub.start()
-        self.show_msg("Begin Push to Github")
-        self.AutoPuShGihub.setFlag(False)  # 修改线程运行状态，关闭线程
-        self.show_msg("Push success")
-        #self.show_msg("线程是否还在运行:"+self.AutoPuShGihub.is_alive())  # 查看线程运行状态
-        self.show_msg(self.AutoPuShGihub.Commit)
+        pwd = os.getcwd()  # 获取当前路径
+        print("当前路径 = " + pwd)
+        AutoGitPath = os.path.join(pwd, 'lib', 'autogit.py')
+        print(AutoGitPath)
+        cmd = 'python ' + AutoGitPath
+        os.system(cmd)
+
+        # commitrepo = self.lineEdit_Add_Commit.text()
+        # print(commitrepo)
+        # if commitrepo == __config__["Other"]["CommitInfo"]: #没有Commit 改变
+        #     print("自动添加Commit")
+        #     print(self.AutoPuShGihub.path)
+        #     self.PushGihubThread.setCommit(ctime())  #添加此时的时间
+        # else:
+        #     self.PushGihubThread.setCommit(commitrepo)
+        # self.AutoPuShGihub.start()
+        # self.show_msg("Begin Push to Github")
+        # self.AutoPuShGihub.setFlag(False)  # 修改线程运行状态，关闭线程
+        # self.show_msg("Push success")
+        # #self.show_msg("线程是否还在运行:"+self.AutoPuShGihub.is_alive())  # 查看线程运行状态
+        # self.show_msg(self.AutoPuShGihub.Commit)
 
 
 
