@@ -185,12 +185,28 @@ class mainButton(QMainWindow, Ui_MainWindow):
         #self.signal_main.emit(self.signal_from_subwindow+'从main来')
 
     def button_press_Push_Github(self):
-        pwd = os.getcwd()  # 获取当前路径
-        print("当前路径 = " + pwd)
-        AutoGitPath = os.path.join(pwd, 'lib', 'autogit.py')
-        print(AutoGitPath)
-        cmd = 'python ' + AutoGitPath
-        os.system(cmd)
+        repo = Repo(blog_position)
+        g = repo.git
+        print("blog位置"+blog_position)
+        isdiff = repo.is_dirty()
+        if len(repo.untracked_files) != 0 or isdiff == True:
+            g.add("--all")
+            print('add success')
+            g.commit("-m " + self.Commit)
+            print("Successful Commit!")
+            # time.sleep(1.5)
+            g.push()
+            print("Successful push!")
+        else:
+            print("没有新的内容需要上传")
+            # self.setFlag(False)  # 关闭线程
+
+        # pwd = os.getcwd()  # 获取当前路径
+        # print("当前路径 = " + pwd)
+        # AutoGitPath = os.path.join(pwd, 'lib', 'autogit.py')
+        # print(AutoGitPath)
+        # cmd = 'python ' + AutoGitPath
+        # os.system(cmd)
 
         # commitrepo = self.lineEdit_Add_Commit.text()
         # print(commitrepo)

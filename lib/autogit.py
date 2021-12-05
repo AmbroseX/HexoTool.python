@@ -39,7 +39,7 @@ class MyGitThread(threading.Thread):
                     print("Successful push!")
 
                 else:
-                    print("代码未改变")
+                    print("没有新的需要上传")
                     self.setFlag(False)  # 关闭线程
 
     def setFlag(self, parm: bool):  # 外部停止线程的操作函数 True开始执行，False关闭进程
@@ -56,7 +56,7 @@ class MyGitThread(threading.Thread):
         return self.Commit
 
 
-__config__ = readymldir('lib/config.yml')
+__config__ = readymldir('config.yml')
 
 #print(__config__)
 
