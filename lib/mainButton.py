@@ -58,9 +58,9 @@ class mainButton(QMainWindow, Ui_MainWindow):
         self.close_local_debug.clicked.connect(self.button_press_close_local_debug)  #关闭本地调试
 
         #多线程操作来Push到GitHub
-        # self.AutoPuShGihub = MyGitThread() #实例化多线程对象
-        # self.AutoPuShGihub.setDaemon(True) #保护线程，主进程结束会关闭线程
-        # self.AutoPuShGihub.setPath(blog_position)  #设置Push的博客本地
+        self.AutoPuShGihub = MyGitThread() #实例化多线程对象
+        self.AutoPuShGihub.setDaemon(True) #保护线程，主进程结束会关闭线程
+        self.AutoPuShGihub.setPath(blog_position)  #设置Push的博客本地
         self.Push_Github.clicked.connect(self.button_press_Push_Github)  # Push到github上面键绑定
         self.lineEdit_Add_Commit.setText(__config__["Other"]["CommitInfo"])
 
@@ -185,21 +185,37 @@ class mainButton(QMainWindow, Ui_MainWindow):
         #self.signal_main.emit(self.signal_from_subwindow+'从main来')
 
     def button_press_Push_Github(self):
+        commitrepo = self.lineEdit_Add_Commit.text()
+        #print(commitrepo)
         repo = Repo(blog_position)
         g = repo.git
-        print("blog位置"+blog_position)
+        print("blog位置" + blog_position)
         isdiff = repo.is_dirty()
         if len(repo.untracked_files) != 0 or isdiff == True:
-            g.add("--all")
-            print('add success')
-            g.commit("-m " + self.Commit)
-            print("Successful Commit!")
-            # time.sleep(1.5)
-            g.push()
-            print("Successful push!")
+            if commitrepo == __config__["Other"]["CommitInfo"]:  # 没有Commit 改变
+                print("自动添加Commit")
+                self.show_msg("自动添加Commit")
+                print(self.AutoPuShGihub.path)
+                self.AutoPuShGihub.setCommit(ctime())  # 添加此时的时间
+            else:
+                self.PushGihubThread.setCommit(commitrepo)
+            self.AutoPuShGihub.start()
+            print("Begin Push to Github")
+            self.show_msg("Begin Push to Github")
+            self.AutoPuShGihub.setFlag(False)  # 修改线程运行状态，关闭线程
+            print("Push success")
+            self.show_msg("Push success")
+            # self.show_msg("线程是否还在运行:"+self.AutoPuShGihub.is_alive())  # 查看线程运行状态
+            self.show_msg(self.AutoPuShGihub.Commit)
         else:
+            self.show_msg("没有新的内容需要上传")
             print("没有新的内容需要上传")
             # self.setFlag(False)  # 关闭线程
+
+
+
+
+
 
         # pwd = os.getcwd()  # 获取当前路径
         # print("当前路径 = " + pwd)
@@ -321,12 +337,12 @@ class MyGitThread(threading.Thread):
                 repo = Repo(self.path)
                 g = repo.git
                 print(self.path)
-                isdiff = repo.is_dirty()
-                if len(repo.untracked_files) != 0 or isdiff == True:
+                IsDiff = repo.is_dirty()
+                if len(repo.untracked_files) != 0 or IsDiff == True:
                     print("有文件不同")
                     g.add("--all")
                     print('add success')
-                    g.commit("-m " + self.Commit)
+                    g.commit("-m " + quotes_str(self.Commit))
                     print("Successful Commit!")
                     g.push()
                     print("Successful push!")
@@ -347,7 +363,7 @@ class MyGitThread(threading.Thread):
                     # print("push success!")
                     # self.setFlag(False)
                 else:
-                    print("代码未改变")
+                    print("没有需要上传的文件")
                     self.setFlag(False)  #关闭线程
     def setFlag(self, parm:bool):  # 外部停止线程的操作函数 True开始执行，False关闭进程
         self.Flag = parm  # boolean
