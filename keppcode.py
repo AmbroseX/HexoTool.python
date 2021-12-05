@@ -1,6 +1,7 @@
 import threading
 import subprocess
 import time
+import os
 
 from git import Repo
 from lib.FileAction import quotes_str
@@ -62,10 +63,12 @@ class MyGitThread(threading.Thread):
 
 
 # 多线程操作来Push到GitHub
-blog_position = 'G:\Data\MyBlog\Tools\HexoTool.python'
+#dirfile = 'G:\Data\MyBlog\Tools\HexoTool.python'
+dirfile = os.path.abspath('') # code的文件位置，我默认将其存放在根目录下
+
 AutoPuShGihub = MyGitThread()  # 实例化多线程对象
 AutoPuShGihub.setDaemon(True)  # 保护线程，主进程结束会关闭线程
-AutoPuShGihub.setPath(blog_position)  # 设置Push的博客本地
+AutoPuShGihub.setPath(dirfile)  # 设置Push的博客本地
 print(AutoPuShGihub.is_alive())
 AutoPuShGihub.start()
 
