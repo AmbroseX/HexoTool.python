@@ -16,6 +16,5 @@ if __name__== '__main__':
     app = QApplication(sys.argv)
     MainWindow = mainButton()
     MainWindow.setWindowIcon(QIcon(os.path.join(pwd, "img","logo.svg")))  #添加窗口图标
-
     MainWindow.show()
     sys.exit(app.exec_())

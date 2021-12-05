@@ -60,16 +60,22 @@ class mainButton(QMainWindow, Ui_MainWindow):
         self.open_local_debug.clicked.connect(self.button_press_open_local_debug)  #打开本地调试
         self.close_local_debug.clicked.connect(self.button_press_close_local_debug)  #关闭本地调试
 
+
+
+
+
+
         #打开GitHubDesktop
 
         self.Push_Github.setIcon(QIcon(os.path.join(pwd, "img","githubdesktop.ico")))
         self.Push_Github.clicked.connect(self.button_press_Push_Github)  # Push到github上面键绑定
-        self.lineEdit_Add_Commit.setText(__config__["Other"]["CommitInfo"])
+       
 
         #新建文章Button绑定
         self.buildWindow = BuildButton()  #实例化新建文章子界面类
         self.build_new.clicked.connect(self.button_press_build_new)  #绑定打开新建文章界面类
 
+        #绑定搜索Button
         self.searchWindow = SearchButton()
         self.search_blog.clicked.connect(self.button_press_search_blog)
 
@@ -193,6 +199,9 @@ class mainButton(QMainWindow, Ui_MainWindow):
         if self.lineEdit_search_blog.text() == '':
             self.show_msg("输入搜索内容为空")
         else:
+            #调用线程打开Everything
+
+
             self.signal_main_to_search.emit(self.lineEdit_search_blog.text())  #发送信号给 search窗口
             self.searchWindow.show()
             self.show_msg("Search success!")
@@ -310,4 +319,5 @@ class MyThread(threading.Thread):
     def setPort(self,parm):
         self.port = parm
         self.localport = self.localport = "http://localhost:"+self.port
+
 

@@ -186,13 +186,6 @@
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit_Add_Commit">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QPushButton" name="Push_Github">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Minimum" vsizetype="Maximum">

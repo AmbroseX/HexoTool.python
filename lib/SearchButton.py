@@ -2,6 +2,8 @@ __author__ = 'Rong_kang_Xiong'
 # -*- coding: utf-8 -*-
 import sys
 import os
+import threading
+import subprocess
 sys.path.append(os.path.join(os.getcwd(), "lib"))  #添加lib
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QDate, QDateTime
@@ -33,15 +35,12 @@ class SearchButton(QMainWindow, Ui_SearchWindow):
         super(SearchButton, self).__init__(parent)
         self.setupUi(self)
 
-        # 初始化信号传递
-        #self.signal_search_from_main = signal_search_from_main
-        #self.signal_search_from_main = self.get_signal(s)
-        #print(self.signal_search+"search")
-        #print(self.signal_search)
-        #print(self.signal_search_from_main)
+        #最小化打开Everything确保能搜索正确
+        cmd = 'cmd /c start /min "" ' + __config__["ToolsPath"]["Everything"]  # 'F:\Everything\Everything.exe'
+        os.system(cmd)
+
         self.pushButton_OpenChooseContent.clicked.connect(self.button_press_OpenChooseContent)
         self.listWidget_SearchContent.itemClicked.connect(self.SearchitemClicked)
-
 
 
     def SearchitemClicked(self,item):
@@ -109,3 +108,4 @@ def SpecialPathContent2Url(path):
             urlpath = urlpath+"%5C"+item
     urlpath = urlpath+"+content%3A"
     return urlpath
+
