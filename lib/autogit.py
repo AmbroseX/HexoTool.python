@@ -34,6 +34,7 @@ class MyGitThread(threading.Thread):
                     print('add success')
                     g.commit("-m "+self.Commit)
                     print("Successful Commit!")
+                    time.sleep(1.5)
                     g.push()
                     print("Successful push!")
 
