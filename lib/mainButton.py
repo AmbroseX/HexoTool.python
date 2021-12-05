@@ -15,6 +15,7 @@ from PyQt5.QtCore import QObject , pyqtSignal
 
 from QtUI.HexoTools import Ui_MainWindow  #导入生成的py文件的类 Ui_MainWindow
 from lib.BuildButton import BuildButton
+from lib.SearchButton import SearchButton
 from lib.PortAction import killPortAllPID
 
 from functools import partial
@@ -33,9 +34,10 @@ pwd = os.getcwd()
 
 
 class mainButton(QMainWindow, Ui_MainWindow):
-    signal_main = pyqtSignal(str) #主界面的信号用来绑定子界面类的函数方法
+    signal_main_to_build = pyqtSignal(str) #主界面的信号用来绑定子界面类的函数方法
+    signal_main_to_search = pyqtSignal(str)
 
-    def __init__(self, parent = None,):
+    def __init__(self, parent = None):
         super(mainButton, self).__init__(parent)
         self.setupUi(self)
 
@@ -67,16 +69,34 @@ class mainButton(QMainWindow, Ui_MainWindow):
         #新建文章Button绑定
         self.buildWindow = BuildButton()  #实例化新建文章子界面类
         self.build_new.clicked.connect(self.button_press_build_new)  #绑定打开新建文章界面类
-       #初始化信号
-        self.signal_from_subwindow = 'None'
-        self.signal_to_build = 'None' #发送给子界面的数据
-        # 信号连接
-        self.signal_main.connect(self.buildWindow.get_signal)  # 将主界面的信号和buildWindow的接受函数绑定
-        self.buildWindow.signal_build.connect(self.get_signal)  # 将buildWindow的信号signal_build和主界面的get_signal连接
 
-        #发送信号
-        self.signal_main.emit(self.signal_to_build)  # 通过自己的信号向子界面传递数据。要想多传递几个值，就在emit(值1，值2） 对应到子界面get_data接受就是2个参数，即get_data(值1，值2）
+        self.searchWindow = SearchButton()
+        self.search_blog.clicked.connect(self.button_press_search_blog)
 
+        #初始化搜索框内容
+        self.lineEdit_search_blog.setPlaceholderText(__config__["CompleteTip"]["SearchTip"])
+
+        #绑定search window信号
+        self.signal_main_to_search.connect(self.searchWindow.get_signal)  #传递给子窗口的信号
+        self.searchWindow.signal_search.connect(self.get_signal_from_search)  #从子窗口来的信号
+
+
+        # #初始化信号
+        # self.signal_from_build = 'None'
+        # self.signal_from_search = 'None'
+        # self.signal_to_build = 'None' #发送给子界面的数据
+        # self.signal_to_search = signal_to_search
+        # # 信号连接buildblog
+        # self.signal_main_to_build.connect(self.buildWindow.get_signal)  # 将主界面的信号和buildWindow的接受函数绑定
+        # self.buildWindow.signal_build.connect(self.get_signal_from_build)  # 将buildWindow的信号signal_build和主界面的get_signal连接
+        #
+        # # 信号连接searchblog
+        # self.signal_main_to_build.connect(self.searchWindow.get_signal)
+        # self.searchWindow.signal_search.connect(self.get_signal_from_search)
+        #
+        # #发送信号绑定
+        # self.signal_main_to_build.emit(self.signal_to_build)  # 通过自己的信号向子界面传递数据。要想多传递几个值，就在emit(值1，值2） 对应到子界面get_data接受就是2个参数，即get_data(值1，值2）
+        # self.signal_main_to_search.emit(self.signal_to_search)  #向子界面Search传递信号绑定
 
     def show_msg(self, msg):  # 在消息框中输出消息
         if not isinstance(msg, str):
@@ -168,27 +188,50 @@ class mainButton(QMainWindow, Ui_MainWindow):
         self.buildWindow.show()
         self.show_msg("Open Build New Essay")
 
+    def button_press_search_blog(self):
+        self.searchWindow.setWindowIcon(QIcon(os.path.join(self.pwd, "img", "everythingSearch.ico")))  #添加窗口图标
+        if self.lineEdit_search_blog.text() == '':
+            self.show_msg("输入搜索内容为空")
+        else:
+            self.signal_main_to_search.emit(self.lineEdit_search_blog.text())  #发送信号给 search窗口
+            self.searchWindow.show()
+            self.show_msg("Search success!")
+
     #从子界面传递来的信号
-    def get_signal(self,signal):
-        self.signal_from_subwindow = signal
-        self.show_msg(self.signal_from_subwindow)
+    def get_signal_from_build(self,signal):
+        self.signal_from_build = signal
+        self.show_msg(self.signal_from_build)
+
+    def get_signal_from_search(self,signal):
+        self.signal_from_search = signal
+        self.show_msg(self.signal_from_search)
 
     def emit_signal_to_build(self,signal):
         #signal = "来自Main:"+signal
-        self.signal_main.emit(signal)
+        self.signal_main_to_build.emit(signal)
 
+    def emit_signal_to_search(self,signal):
+        self.signal_main_to_search.emit(signal)
 
     # 清空消息日志
     def button_press_clear_log(self):
         #self.show_msg("ceshi")
         self.Show_message.setPlainText('')
-        #self.signal_main.emit(self.signal_from_subwindow+'从main来')
+
 
     def button_press_Push_Github(self):
         #放弃了开进程自动上传，因为会有各种原因导致程序崩溃
         githubpath = __config__["ToolsPath"]["GitHubDesktop"]
         githubDeskTop = subprocess.Popen(githubpath)
         self.show_msg("打开GitHubDesktop")
+
+
+    # 检测键盘回车按键
+    def keyPressEvent(self, QkeyEvent):
+        print("按下：" + str(QkeyEvent.key()))
+        if(QkeyEvent.key() == 16777220):  #敲击回车
+            self.button_press_search_blog()
+
 
 
 def executeCommand(self, cmd:str):

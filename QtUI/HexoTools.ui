@@ -94,13 +94,13 @@
          <bool>true</bool>
         </property>
         <property name="mouseTracking">
-         <bool>false</bool>
+         <bool>true</bool>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::DefaultContextMenu</enum>
         </property>
         <property name="acceptDrops">
          <bool>true</bool>
-        </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
         </property>
         <property name="inputMethodHints">
          <set>Qt::ImhNone</set>
@@ -109,7 +109,10 @@
          <string/>
         </property>
         <property name="text">
-         <string>输入要搜索的内容</string>
+         <string/>
+        </property>
+        <property name="frame">
+         <bool>true</bool>
         </property>
         <property name="dragEnabled">
          <bool>true</bool>

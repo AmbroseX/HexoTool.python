@@ -39,7 +39,8 @@ class BuildButton(QMainWindow, Ui_BuildWindow):
 
         #选择缩略图
         self.choose_img.clicked.connect(self.Button_press_choose_img)
-        #
+
+        #新建文章绑定
         self.open_essay.clicked.connect(self.Button_press_open_essay)
 
 
@@ -63,6 +64,13 @@ class BuildButton(QMainWindow, Ui_BuildWindow):
         cmd3 = 'hexo new '+self.essay_type.currentText()+' '+title # 执行hexo new
         cmdall = cmd1 + " && " + cmd2+" && "+cmd3
         os.system(cmdall)
+        self.emit_signal("Build New Essay:"+title)
+        self.close()  #关闭窗口
+        BuildTitle = __config__["Config"]["BuildTitle"]
+        if BuildTitle == "True":
+            self.lineEdit_title.setText('')  # 清除内容
+            print(BuildTitle)
+
 
     def selectionchange(self,i):
         # 标签用来显示选中的文本
@@ -98,6 +106,7 @@ class BuildButton(QMainWindow, Ui_BuildWindow):
                     self.emit_signal("文章标题不能全为空格")
                 else:
                     self.Button_press_open_essay()
+
 
 
 

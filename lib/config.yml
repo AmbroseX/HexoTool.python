@@ -4,6 +4,10 @@ author:
     HomePage: "https://rongkangxiong.top"
     #author2: "XXX"
 
+Config:
+    BuildTitle: "True"  #  "True" "False" 是否保留新建文章后Title框中内容
+
+
 BlogInfo:
     blog_position: 'G:\Data\MyBlog\source_blog'   #注意单引号
     gitee: "https://neuronbear.gitee.io/"
@@ -19,9 +23,11 @@ HexoCommand:
 CompleteTip:
     star: "*"
     server_done_text: "server done"
+    SearchTip: "在这里输入要搜索的内容"
 
 Other:
     CommitInfo: "Add Commit Here"
 
 ToolsPath:
     GitHubDesktop: 'C:\Users\Administrator\AppData\Local\GitHubDesktop\GitHubDesktop.exe'
+    Everythins: 
