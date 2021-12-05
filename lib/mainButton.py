@@ -28,7 +28,7 @@ __config__ = readymldir("lib/config.yml")  #配置文件导入
 blog_position = __config__["BlogInfo"]["blog_position"]
 cmd_gotoblogfolder = 'cd '+blog_position
 blog_disk = blog_position.split("\\")[0]  #获取博客所在盘符
-print(blog_disk)
+#print(blog_disk)
 
 
 class mainButton(QMainWindow, Ui_MainWindow):
