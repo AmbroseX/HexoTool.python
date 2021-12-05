@@ -58,9 +58,9 @@ class mainButton(QMainWindow, Ui_MainWindow):
         self.close_local_debug.clicked.connect(self.button_press_close_local_debug)  #关闭本地调试
 
         #多线程操作来Push到GitHub
-        self.AutoPuShGihub = MyGitThread() #实例化多线程对象
-        self.AutoPuShGihub.setDaemon(True) #保护线程，主进程结束会关闭线程
-        self.AutoPuShGihub.setPath(blog_position)  #设置Push的博客本地
+        # self.AutoPuShGihub = MyGitThread() #实例化多线程对象
+        # self.AutoPuShGihub.setDaemon(True) #保护线程，主进程结束会关闭线程
+        # self.AutoPuShGihub.setPath(blog_position)  #设置Push的博客本地
         self.Push_Github.clicked.connect(self.button_press_Push_Github)  # Push到github上面键绑定
         self.lineEdit_Add_Commit.setText(__config__["Other"]["CommitInfo"])
 
@@ -153,6 +153,7 @@ class mainButton(QMainWindow, Ui_MainWindow):
 
 
     def button_press_close_local_debug(self):
+        self.show_msg("Please wait ... ... ...")
         result = killPortAllPID(self.OpenServer.port)
         self.OpenServer.setFlag(False)
         print(self.OpenServer.is_alive())
