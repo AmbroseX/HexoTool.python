@@ -28,6 +28,7 @@ __config__ = readymldir("lib/config.yml")  #配置文件导入
 blog_position = __config__["BlogInfo"]["blog_position"]
 cmd_gotoblogfolder = 'cd '+blog_position
 blog_disk = blog_position.split("\\")[0]  #获取博客所在盘符
+pwd = os.getcwd()
 #print(blog_disk)
 
 
@@ -58,6 +59,8 @@ class mainButton(QMainWindow, Ui_MainWindow):
         self.close_local_debug.clicked.connect(self.button_press_close_local_debug)  #关闭本地调试
 
         #打开GitHubDesktop
+
+        self.Push_Github.setIcon(QIcon(os.path.join(pwd, "img","githubdesktop.ico")))
         self.Push_Github.clicked.connect(self.button_press_Push_Github)  # Push到github上面键绑定
         self.lineEdit_Add_Commit.setText(__config__["Other"]["CommitInfo"])
 

@@ -103,6 +103,8 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.Push_Github.sizePolicy().hasHeightForWidth())
         self.Push_Github.setSizePolicy(sizePolicy)
+        self.Push_Github.setStyleSheet("background-color: rgb(85, 170, 255);\n"
+"color: rgb(255, 255, 255);")
         self.Push_Github.setObjectName("Push_Github")
         self.verticalLayout.addWidget(self.Push_Github)
         MainWindow.setCentralWidget(self.centralwidget)
