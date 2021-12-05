@@ -47,36 +47,47 @@ class mainButton(QMainWindow, Ui_MainWindow):
 
         #将相应函数绑定到Button
         self.show_comand.clicked.connect(self.button_press_show_comand)  #显示常用命令
+
+        self.open_gitee.setIcon(QIcon(os.path.join(pwd, "img", "gitee.jpg")))
         self.open_gitee.clicked.connect(partial(self.openlink,__config__["BlogInfo"]["gitee"]))  #绑定点击打开gitee
+
+        self.open_github.setIcon(QIcon(os.path.join(pwd, "img", "github.jpg")))
         self.open_github.clicked.connect(partial(self.openlink,__config__["BlogInfo"]["github"]))  #绑定点击打开github
+
+
         self.choose_blog_position.clicked.connect(self.button_press_choose_blog_position)  #点击选择博客路径
         self.open_blog_position.clicked.connect(self.button_press_open_blog_path)  #打开博客路径
 
+        # 清空消息日志
+        self.clear_log.setIcon(QIcon(os.path.join(pwd, "img","clear.ico")))
         self.clear_log.clicked.connect(self.button_press_clear_log)  # 清空消息日志
 
         #多线程操作来打开本地Server
         self.OpenServer = MyThread()  #实例化多线程对象
         self.OpenServer.setDaemon(True) #保护线程，主进程结束会关闭线程
+
+        self.open_local_debug.setIcon(QIcon(os.path.join(pwd, "img", "debug.jpg")))
         self.open_local_debug.clicked.connect(self.button_press_open_local_debug)  #打开本地调试
+
+        self.close_local_debug.setIcon(QIcon(os.path.join(pwd, "img", "close.jpg")))
         self.close_local_debug.clicked.connect(self.button_press_close_local_debug)  #关闭本地调试
 
 
 
-
-
-
         #打开GitHubDesktop
-
-        self.Push_Github.setIcon(QIcon(os.path.join(pwd, "img","githubdesktop.ico")))
+        self.Push_Github.setIcon(QIcon(os.path.join(pwd, "img","githubdesktop.ico")))  #设置图标
         self.Push_Github.clicked.connect(self.button_press_Push_Github)  # Push到github上面键绑定
-       
+
 
         #新建文章Button绑定
+
         self.buildWindow = BuildButton()  #实例化新建文章子界面类
+        self.build_new.setIcon(QIcon(os.path.join(pwd, "img","add.ico")))
         self.build_new.clicked.connect(self.button_press_build_new)  #绑定打开新建文章界面类
 
         #绑定搜索Button
         self.searchWindow = SearchButton()
+        self.search_blog.setIcon(QIcon(os.path.join(pwd, "img","everythingSearch.ico")))
         self.search_blog.clicked.connect(self.button_press_search_blog)
 
         #初始化搜索框内容
@@ -86,23 +97,6 @@ class mainButton(QMainWindow, Ui_MainWindow):
         self.signal_main_to_search.connect(self.searchWindow.get_signal)  #传递给子窗口的信号
         self.searchWindow.signal_search.connect(self.get_signal_from_search)  #从子窗口来的信号
 
-
-        # #初始化信号
-        # self.signal_from_build = 'None'
-        # self.signal_from_search = 'None'
-        # self.signal_to_build = 'None' #发送给子界面的数据
-        # self.signal_to_search = signal_to_search
-        # # 信号连接buildblog
-        # self.signal_main_to_build.connect(self.buildWindow.get_signal)  # 将主界面的信号和buildWindow的接受函数绑定
-        # self.buildWindow.signal_build.connect(self.get_signal_from_build)  # 将buildWindow的信号signal_build和主界面的get_signal连接
-        #
-        # # 信号连接searchblog
-        # self.signal_main_to_build.connect(self.searchWindow.get_signal)
-        # self.searchWindow.signal_search.connect(self.get_signal_from_search)
-        #
-        # #发送信号绑定
-        # self.signal_main_to_build.emit(self.signal_to_build)  # 通过自己的信号向子界面传递数据。要想多传递几个值，就在emit(值1，值2） 对应到子界面get_data接受就是2个参数，即get_data(值1，值2）
-        # self.signal_main_to_search.emit(self.signal_to_search)  #向子界面Search传递信号绑定
 
     def show_msg(self, msg):  # 在消息框中输出消息
         if not isinstance(msg, str):
