@@ -2,7 +2,8 @@ import threading
 import time
 from git import Repo
 from FileAction import readymldir
-
+import inspect
+import ctypes
 
 
 
@@ -10,8 +11,7 @@ from FileAction import readymldir
 def getdesk(path: str):
     return path.split("\\")[0]  # 获取博客所在盘符
 
-import inspect
-import ctypes
+
 def _async_raise(tid, exctype):
     """raises the exception, performs cleanup if needed"""
     tid = ctypes.c_long(tid)
