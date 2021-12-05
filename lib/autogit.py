@@ -57,28 +57,22 @@ class MyGitThread(threading.Thread):
 
 __config__ = readymldir('lib/config.yml')
 
-print(__config__)
+#print(__config__)
 
 blog_position = __config__["BlogInfo"]["blog_position"]
 
-print(blog_position)
+#print(blog_position)
 
 cmd_gotoblogfolder = 'cd '+blog_position
 blog_disk = blog_position.split("\\")[0]  #获取博客所在盘符
-print(blog_disk)
+#print(blog_disk)
 
 # dirfile = blog_position
 dirfile = 'G:\Data\MyBlog\Tools\HexoTool.python'
 
-# repo = Repo(dirfile)
-# print(repo.active_branch)
 
-# dirfile = 'G:\Data\MyBlog\source_blog'
-# # dirfile = os.path.abspath('') # code的文件位置，我默认将其存放在根目录下
-#
-#
+
 # 多线程操作来Push到GitHub
-
 AutoPuShGihub = MyGitThread()  # 实例化多线程对象
 AutoPuShGihub.setDaemon(True)  # 保护线程，主进程结束会关闭线程
 AutoPuShGihub.setPath(dirfile)  # 设置Push的博客本地
