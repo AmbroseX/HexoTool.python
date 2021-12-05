@@ -26,6 +26,7 @@ class MyGitThread(threading.Thread):
                 break
             else:
                 repo = Repo(self.path)
+                repo.remote().pull()  #拉取代码
                 print(self.path)
                 isdiff = repo.is_dirty()
                 if len(repo.untracked_files) != 0 or isdiff == True:
@@ -69,16 +70,28 @@ class MyGitThread(threading.Thread):
 
 # 多线程操作来Push到GitHub
 dirfile = 'G:\Data\MyBlog\Tools\HexoTool.python'
+
+
+repo = Repo(dirfile)
+#repo.remote().pull()
+print(repo.active_branch)
+
+g = repo.git
+g.add("--all")
+g.commit("-m auto update")
+g.push()
+print("Successful push!")
+
 #dirfile = 'G:\Data\MyBlog\source_blog'
 #dirfile = os.path.abspath('') # code的文件位置，我默认将其存放在根目录下
 
-AutoPuShGihub = MyGitThread()  # 实例化多线程对象
-AutoPuShGihub.setDaemon(True)  # 保护线程，主进程结束会关闭线程
-AutoPuShGihub.setPath(dirfile)  # 设置Push的博客本地
-print(AutoPuShGihub.is_alive())
-AutoPuShGihub.start()
+#AutoPuShGihub = MyGitThread()  # 实例化多线程对象
+#AutoPuShGihub.setDaemon(True)  # 保护线程，主进程结束会关闭线程
+#AutoPuShGihub.setPath(dirfile)  # 设置Push的博客本地
+#print(AutoPuShGihub.is_alive())
+#AutoPuShGihub.start()
 
-AutoPuShGihub.setFlag(False)
-time.sleep(2)
-print(AutoPuShGihub.is_alive())
+#AutoPuShGihub.setFlag(False)
+#time.sleep(2)
+#print(AutoPuShGihub.is_alive())
 
