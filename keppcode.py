@@ -40,9 +40,10 @@ class MyGitThread(threading.Thread):
                     self.logCommit = cmd_commit
                     print(cmd_commit)
                     git_push = 'git push'
-                    cmdall = cmd1 + ' && '+cmd2+' && '+cmd_gitadd+' && '+cmd_commit+' && '+git_push
-                    child = subprocess.call(cmdall, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,stderr=subprocess.PIPE,close_fds=True)
-                    os.system(cmdall)
+                    cmdall1 = cmd1 + ' && '+cmd2+' && '+cmd_gitadd+' && '+cmd_commit
+                    child = subprocess.call(cmdall1, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,stderr=subprocess.PIPE,close_fds=True)
+                    cmdall2 =cmd1 + ' && '+cmd2+' && '+cmd_gitadd+' && '+git_push
+                    os.system(cmdall2)
                     print("push success!")
                     self.setFlag(False)
                 else:
@@ -64,6 +65,7 @@ class MyGitThread(threading.Thread):
 
 # 多线程操作来Push到GitHub
 dirfile = 'G:\Data\MyBlog\Tools\HexoTool.python'
+#dirfile = 'G:\Data\MyBlog\source_blog'
 #dirfile = os.path.abspath('') # code的文件位置，我默认将其存放在根目录下
 
 AutoPuShGihub = MyGitThread()  # 实例化多线程对象
