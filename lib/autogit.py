@@ -3,7 +3,7 @@ import time
 from git import Repo
 from FileAction import readymldir
 
-__config__ = readymldir('config.yml')
+
 
 def getdesk(path: str):
     return path.split("\\")[0]  # 获取博客所在盘符
@@ -55,16 +55,17 @@ class MyGitThread(threading.Thread):
         return self.Commit
 
 
+__config__ = readymldir('lib/config.yml')
 
-#print(__config__)
+print(__config__)
 
-# blog_position = __config__["BlogInfo"]["blog_position"]
-#
-# print(blog_position)
-#
-# cmd_gotoblogfolder = 'cd '+blog_position
-# blog_disk = blog_position.split("\\")[0]  #获取博客所在盘符
-# print(blog_disk)
+blog_position = __config__["BlogInfo"]["blog_position"]
+
+print(blog_position)
+
+cmd_gotoblogfolder = 'cd '+blog_position
+blog_disk = blog_position.split("\\")[0]  #获取博客所在盘符
+print(blog_disk)
 
 # dirfile = blog_position
 dirfile = 'G:\Data\MyBlog\Tools\HexoTool.python'
