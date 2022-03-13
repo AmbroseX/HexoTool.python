@@ -291,6 +291,8 @@ class MyThread(threading.Thread):
                 cmd1 = blog_disk  # 切换到对应的盘路径
                 cmd2 = cmd_gotoblogfolder
                 # print(self.lineEdit_port.text())
+                #需要添加判断是否重新生成页面
+
                 cmd3 = serverWithAnotherPort(self.port)  # 执行hexo s -p port
                 cmdall = cmd1 + ' && ' + cmd2 + ' && ' + cmd3
                 print("%s: %s" % (self.ThreadName, self.port))
